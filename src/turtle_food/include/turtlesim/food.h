@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <boost/shared_ptr.hpp>
+#include <turtlesim/Pose.h>
 #include "std_msgs/String.h"
 
 #include <QImage>
@@ -20,16 +21,17 @@
 class Food
 {
 	public:
-		Food(int& argc, char** argv);
+		Food(const ros::NodeHandle &nh);
 		void print_food_info();
-		void positionCallback(const std_msgs::String::ConstPtr& msg);
+		void positionCallback(const turtlesim::Pose::ConstPtr& msg);
 
 	private:
 		std::string name_;
 		int calories_;
 		QPointF pos_x_;
 		QPointF pos_y_;
-		ros::NodeHandle n_;
+		ros::Subscriber sub_;
+		ros::NodeHandle nh_;
 };
 
 #endif // TURTLE_FOOD_H

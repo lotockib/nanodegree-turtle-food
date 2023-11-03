@@ -4,9 +4,10 @@
 // {
 
 // class: contains name of class
-Food::Food(int& argc, char** argv) : name_("base food"), calories_(0), n_(ros::NodeHandle("testname"))
+Food::Food(const ros::NodeHandle &nh) : name_("base food"), calories_(0)
 {
-	ros::Subscriber sub = n_.subscribe("pose", 1, &Food::positionCallback, this);
+	nh_ = nh;
+	sub_ = nh_.subscribe("/turtle1/pose", 1000, &Food::positionCallback, this);
 }
 
 // print loop: just prints using ROS_INFO
@@ -16,25 +17,26 @@ void Food::print_food_info()
 }
 
 // callback to lister to turtle position
-void Food::positionCallback(const std_msgs::String::ConstPtr& msg)
+void Food::positionCallback(const turtlesim::Pose::ConstPtr& msg)
 {
-	ROS_INFO("I heard: [%s]", msg->data.c_str());
+	ROS_INFO("I heard: [%f] [%f]", msg->x, msg->y);
+}
+
+void nonClassCallback(const turtlesim::Pose::ConstPtr& msg)
+{
+	ROS_INFO("I heard: [%f] [%f]", msg->x, msg->y);
 }
 
 // main: create class -> run print loop
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-	ros::init(argc, argv, "food_node");
-	Food new_food = Food(argc, argv);
+	ros::init(argc, argv, "food");
+	Food new_food = Food(ros::NodeHandle("food_handle"));
 
-	while (true)
-	{
-		ros::spin();
-		new_food.print_food_info();
-		sleep(1);
-	}
+	ROS_INFO("Listenening for turtle1/pose");
+	ros::spin();
 
-	return(0);
+	return 0;
 
 }
 
