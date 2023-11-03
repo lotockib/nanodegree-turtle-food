@@ -3,12 +3,14 @@
         {
             "name": "Linux",
             "includePath": [
+                "${workspaceFolder}/src/turtle_food/include/turtlesim/**",
                 "${workspaceFolder}/**",
                 "/opt/ros/kinetic/**",
+                "/usr/include/x86_64-linux-gnu/qt5/**"
             ],
             "defines": [],
-            "compilerPath": "/usr/bin/g++",
-            "cStandard": "c11",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "linux-gcc-x64"
         }
