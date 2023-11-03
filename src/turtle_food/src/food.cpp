@@ -4,7 +4,7 @@
 // {
 
 // class: contains name of class
-Food::Food(int& argc, char** argv) : name_("base food"), calories_(0)
+Food::Food(int& argc, char** argv) : name_("base food"), calories_(0), n_(ros::NodeHandle("testname"))
 {
 	ros::Subscriber sub = n_.subscribe("pose", 1, &Food::positionCallback, this);
 }
