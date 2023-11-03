@@ -36,9 +36,11 @@ qt5_wrap_cpp(turtlesim_node_MOCS ${turtlesim_node_HDRS})
 #   src/food.cpp
 # )
 
-# set(food_node_HDRS
-#   include/turtlesim/food.h
-# )
+set(food_node_HDRS
+  include/turtlesim/food.h
+)
+
+qt5_wrap_cpp(food_node_MOCS ${food_node_HDRS})
 
 add_executable(turtlesim_node ${turtlesim_node_SRCS} ${turtlesim_node_MOCS})
 target_link_libraries(turtlesim_node Qt5::Widgets ${catkin_LIBRARIES} ${Boost_LIBRARIES})
@@ -58,8 +60,8 @@ add_dependencies(mimic turtlesim_gencpp)
 # target_link_libraries(food_node ${catkin_LIBRARIES})
 # add_dependencies(food_node turtlesim_gencpp)
 
-add_executable(food_node src/food.cpp include/turtlesim/food.h)
-target_link_libraries(food_node ${catkin_LIBRARIES})
+add_executable(food_node src/food.cpp ${food_node_MOCS})
+target_link_libraries(food_node Qt5::Widgets ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_dependencies(food_node turtlesim_gencpp)
 
 install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic food_node
