@@ -1,6 +1,7 @@
 {
 	"cmake.sourceDirectory": "/home/brad/nanodegree-turtle-food/src/turtle_food",
 	"files.associations": {
-		"qimage": "cpp"
+		"qimage": "cpp",
+		"iostream": "cpp"
 	}
 }
