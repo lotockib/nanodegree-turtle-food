@@ -107,7 +107,7 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
   width_in_meters_ = (width() - 1) / meter_;
   height_in_meters_ = (height() - 1) / meter_;
   spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
-  spawnFood("apple", width_in_meters_ / 2.0, height_in_meters_ * 0.75, 0);
+  spawnFood("apple", width_in_meters_ / 4.0, height_in_meters_ * 0.75, 0);
 
   // spawn all available turtle types
   if(false)
@@ -216,7 +216,7 @@ std::string TurtleFrame::spawnFood(const std::string& name, float x, float y, si
   //   }
   // }
 
-  TurtlePtr t(new Turtle(ros::NodeHandle(real_name), turtle_images_[index], QPointF(x, height_in_meters_ - y), 0));
+  TurtlePtr t(new Turtle(ros::NodeHandle(real_name), food_images_[index], QPointF(x, height_in_meters_ - y), PI / 2));
   turtles_[real_name] = t;
   update();
 
