@@ -58,6 +58,7 @@ public:
 
   std::string spawnTurtle(const std::string& name, float x, float y, float angle);
   std::string spawnTurtle(const std::string& name, float x, float y, float angle, size_t index);
+  std::string spawnFood(const std::string& name, float x, float y, size_t index);
 
 protected:
   void paintEvent(QPaintEvent* event);
@@ -74,7 +75,6 @@ private:
   bool resetCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
   bool spawnCallback(turtlesim::Spawn::Request&, turtlesim::Spawn::Response&);
   bool killCallback(turtlesim::Kill::Request&, turtlesim::Kill::Response&);
-  std::string spawnFood(const std::string& name, float x, float y, size_t index);
 
   ros::NodeHandle nh_;
   QTimer* update_timer_;
