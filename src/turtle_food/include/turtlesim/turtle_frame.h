@@ -74,6 +74,7 @@ private:
   bool resetCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
   bool spawnCallback(turtlesim::Spawn::Request&, turtlesim::Spawn::Response&);
   bool killCallback(turtlesim::Kill::Request&, turtlesim::Kill::Response&);
+  std::string spawnFood(const std::string& name, float x, float y, size_t index);
 
   ros::NodeHandle nh_;
   QTimer* update_timer_;
@@ -94,6 +95,7 @@ private:
   uint32_t id_counter_;
 
   QVector<QImage> turtle_images_;
+  QVector<QImage> food_images_;
 
   float meter_;
   float width_in_meters_;
