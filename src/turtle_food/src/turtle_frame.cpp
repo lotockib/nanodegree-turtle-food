@@ -107,7 +107,7 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
   width_in_meters_ = (width() - 1) / meter_;
   height_in_meters_ = (height() - 1) / meter_;
   spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
-  spawnFood("apple", width_in_meters_ / 4.0, height_in_meters_ * 0.75, 0);
+  // spawnFood("apple", width_in_meters_ / 4.0, height_in_meters_ * 0.75, 0);
 
   // spawn all available turtle types
   if(false)
@@ -143,6 +143,37 @@ bool TurtleFrame::spawnCallback(turtlesim::Spawn::Request& req, turtlesim::Spawn
 
 bool TurtleFrame::killCallback(turtlesim::Kill::Request& req, turtlesim::Kill::Response&)
 {
+  M_Turtle::iterator it = turtles_.find(req.name);
+  if (it == turtles_.end())
+  {
+    ROS_ERROR("Tried to kill turtle [%s], which does not exist", req.name.c_str());
+    return false;
+  }
+
+  turtles_.erase(it);
+  update();
+
+  return true;
+}
+
+bool TurtleFrame::spawnFoodCallback(turtlesim::SpawnFood::Request& req, turtlesim::SpawnFood::Response& res)
+{
+  std::string name = spawnFood(req.name, req.x, req.y);
+  if (name.empty())
+  {
+    ROS_ERROR("A turtled named [%s] already exists", req.name.c_str());
+    return false;
+  }
+
+  res.name = name;
+
+  return true;
+}
+
+bool TurtleFrame::killFoodCallback(turtlesim::KillFood::Request& req, turtlesim::KillFood::Response&)
+{
+  // TODO should I add logic to confirm it's food?
+
   M_Turtle::iterator it = turtles_.find(req.name);
   if (it == turtles_.end())
   {

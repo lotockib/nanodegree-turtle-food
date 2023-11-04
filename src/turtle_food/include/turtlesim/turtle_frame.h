@@ -75,6 +75,8 @@ private:
   bool resetCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
   bool spawnCallback(turtlesim::Spawn::Request&, turtlesim::Spawn::Response&);
   bool killCallback(turtlesim::Kill::Request&, turtlesim::Kill::Response&);
+  bool spawnFoodCallback(turtlesim::SpawnFood::Request&, turtlesim::SpawnFood::Response&);
+  bool killFoodCallback(turtlesim::KillFood::Request&, turtlesim::KillFood::Response&);
 
   ros::NodeHandle nh_;
   QTimer* update_timer_;
