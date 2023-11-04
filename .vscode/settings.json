@@ -1,8 +1,15 @@
 {
-	"cmake.sourceDirectory": "/home/brad/nanodegree-turtle-food/src/turtle_food",
+	"cmake.sourceDirectory": "/home/blotocki/git/nanodegree-turtle-food/src/turtle_food",
 	"files.associations": {
 		"qimage": "cpp",
 		"iostream": "cpp"
 	},
-	"C_Cpp.default.compilerPath": "/usr/bin/gcc"
+	"C_Cpp.default.compilerPath": "/usr/bin/gcc",
+	"ros.distro": "foxy",
+	"python.autoComplete.extraPaths": [
+		"/opt/ros/foxy/lib/python3.8/site-packages"
+	],
+	"python.analysis.extraPaths": [
+		"/opt/ros/foxy/lib/python3.8/site-packages"
+	]
 }
