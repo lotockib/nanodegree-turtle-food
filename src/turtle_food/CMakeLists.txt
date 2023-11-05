@@ -42,7 +42,7 @@ set(turtlesim_node_SRCS
   src/turtle_frame.cpp
 )
 set(turtlesim_node_HDRS
-  include/turtlesim/turtle_frame.h
+  include/turtle_food/turtle_frame.h
 )
 
 qt5_wrap_cpp(turtlesim_node_MOCS ${turtlesim_node_HDRS})
@@ -52,7 +52,7 @@ qt5_wrap_cpp(turtlesim_node_MOCS ${turtlesim_node_HDRS})
 # )
 
 set(food_node_HDRS
-  include/turtlesim/food.h
+  include/turtle_food/food.h
 )
 
 qt5_wrap_cpp(food_node_MOCS ${food_node_HDRS})

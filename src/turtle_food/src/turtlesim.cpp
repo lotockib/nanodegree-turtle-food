@@ -31,7 +31,7 @@
 
 #include <ros/ros.h>
 
-#include "turtlesim/turtle_frame.h"
+#include "turtle_food/turtle_frame.h"
 
 class TurtleApp : public QApplication
 {
@@ -47,7 +47,7 @@ public:
 
   int exec()
   {
-    turtlesim::TurtleFrame frame;
+    turtle_food::TurtleFrame frame;
     frame.show();
 
     return QApplication::exec();

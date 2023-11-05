@@ -1,4 +1,4 @@
-#include "turtlesim/food.h"
+#include "turtle_food/food.h"
 
 // namespace turtlesim
 // {
@@ -17,12 +17,12 @@ void Food::print_food_info()
 }
 
 // callback to lister to turtle position
-void Food::positionCallback(const turtlesim::Pose::ConstPtr& msg)
+void Food::positionCallback(const turtle_food::Pose::ConstPtr& msg)
 {
 	ROS_INFO("I heard: [%f] [%f]", msg->x, msg->y);
 }
 
-void nonClassCallback(const turtlesim::Pose::ConstPtr& msg)
+void nonClassCallback(const turtle_food::Pose::ConstPtr& msg)
 {
 	ROS_INFO("I heard: [%f] [%f]", msg->x, msg->y);
 }

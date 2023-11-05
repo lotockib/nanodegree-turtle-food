@@ -48,7 +48,7 @@
 # include "turtle.h"
 #endif
 
-namespace turtlesim
+namespace turtle_food
 {
 
 class TurtleFrame : public QFrame

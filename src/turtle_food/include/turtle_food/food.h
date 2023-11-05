@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <boost/shared_ptr.hpp>
-#include <turtlesim/Pose.h>
+#include <turtle_food/Pose.h>
 #include "std_msgs/String.h"
 
 #include <QImage>
@@ -23,7 +23,7 @@ class Food
 	public:
 		Food(const ros::NodeHandle &nh);
 		void print_food_info();
-		void positionCallback(const turtlesim::Pose::ConstPtr& msg);
+		void positionCallback(const turtle_food::Pose::ConstPtr& msg);
 
 	private:
 		std::string name_;

@@ -3,7 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/src/turtle_food/include/turtlesim/**",
+                "${workspaceFolder}/src/turtle_food/include/turtle_food/**",
                 "${workspaceFolder}/devel/include/turtle_food/**",
                 "${workspaceFolder}/**",
                 "/opt/ros/kinetic/**",

@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "turtlesim/turtle_frame.h"
+#include "turtle_food/turtle_frame.h"
 
 #include <QPointF>
 
@@ -39,7 +39,7 @@
 #define DEFAULT_BG_G 0x56
 #define DEFAULT_BG_B 0xff
 
-namespace turtlesim
+namespace turtle_food
 {
 
 TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
