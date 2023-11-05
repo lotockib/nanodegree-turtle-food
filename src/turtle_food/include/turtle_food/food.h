@@ -25,7 +25,7 @@ class Food
 		Food(const ros::NodeHandle &nh);
 		void print_food_info();
 		void positionCallback(const turtle_food::Pose::ConstPtr& msg);
-		void spawnFood(ros::NodeHandle n);
+		void spawnFood();
 
 	private:
 		std::string name_;
@@ -34,6 +34,8 @@ class Food
 		QPointF pos_y_;
 		ros::Subscriber sub_;
 		ros::NodeHandle nh_;
+		float x_;
+		float y_;
 };
 
 #endif // TURTLE_FOOD_H

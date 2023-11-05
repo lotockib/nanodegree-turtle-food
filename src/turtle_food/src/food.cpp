@@ -4,7 +4,7 @@
 // {
 
 // class: contains name of class
-Food::Food(const ros::NodeHandle &nh) : name_("base food"), calories_(0)
+Food::Food(const ros::NodeHandle &nh) : name_("base food"), calories_(0), x_(0), y_(0)
 {
 	nh_ = nh;
 	sub_ = nh_.subscribe("/turtle1/pose", 1000, &Food::positionCallback, this);
@@ -27,24 +27,18 @@ void nonClassCallback(const turtle_food::Pose::ConstPtr& msg)
 	ROS_INFO("I heard: [%f] [%f]", msg->x, msg->y);
 }
 
-// void spawnFood(ros::NodeHandle n)
-// {
-// 	return;
-// }
-
-// main: create class -> run print loop
-int main(int argc, char **argv)
+void Food::spawnFood()
 {
-	ros::init(argc, argv, "food");
-	Food new_food = Food(ros::NodeHandle("food_handle"));
-
 	/* Spawn food manually */
 	ros::NodeHandle n;
 	ros::ServiceClient client = n.serviceClient<turtle_food::SpawnFood>("spawnFood");
 	turtle_food::SpawnFood new_food_srv;
-	new_food_srv.request.x = 2;
-	new_food_srv.request.y = 2;
-	new_food_srv.request.name = "food1";	
+	std::string name = "food1";
+	x_ += 0.5;
+	y_ += 0.5;
+	new_food_srv.request.x = x_;
+	new_food_srv.request.y = y_;
+	new_food_srv.request.name = name;	
 	if (client.call(new_food_srv))
   {
     ROS_INFO("Food created: %s", new_food_srv.response.name.c_str());
@@ -52,10 +46,18 @@ int main(int argc, char **argv)
   else
   {
     ROS_ERROR("Failed to call service spawn food");
-    return 1;
+    return;
   }
-	
-	// new_food.spawnFood(n);
+	return;
+}
+
+// main: create class -> run print loop
+int main(int argc, char **argv)
+{
+	ros::init(argc, argv, "food");
+	Food new_food = Food(ros::NodeHandle("food_handle"));
+
+	new_food.spawnFood();
 
 	ROS_INFO("Listenening for turtle1/pose");
 	ros::spin();
