@@ -1,19 +1,18 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>turtle_food</name>
-  <version>0.7.1</version>
+  <version>0.0.0</version>
   <description>
     turtle_food is a package developed from ros tutorial turtlesim
   </description>
-  <maintainer email="mabel@openrobotics.org">Mabel Zhang</maintainer>
-  <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
-  <license>BSD</license>
+  <maintainer email="brad.lotocki@gmail.com">Brad Lotocki</maintainer>
+  <license>TODO</license>
 
-  <url type="website">http://www.ros.org/wiki/turtlesim</url>
+  <!-- <url type="website">http://www.ros.org/wiki/turtlesim</url>
   <url type="bugtracker">https://github.com/ros/ros_tutorials/issues</url>
   <url type="repository">https://github.com/ros/ros_tutorials</url>
   <author>Josh Faust</author>
-  <author email="dthomas@osrfoundation.org">Dirk Thomas</author>
+  <author email="dthomas@osrfoundation.org">Dirk Thomas</author> -->
 
   <buildtool_depend>catkin</buildtool_depend>
 
@@ -29,15 +28,15 @@
   <build_depend>std_msgs</build_depend>
   <build_depend>std_srvs</build_depend>
 
-  <run_depend>geometry_msgs</run_depend>
-  <run_depend>libqt5-core</run_depend>
-  <run_depend>libqt5-gui</run_depend>
-  <run_depend>message_runtime</run_depend>
-  <run_depend>rosconsole</run_depend>
-  <run_depend>roscpp</run_depend>
-  <run_depend>roscpp_serialization</run_depend>
-  <run_depend>roslib</run_depend>
-  <run_depend>rostime</run_depend>
-  <run_depend>std_msgs</run_depend>
-  <run_depend>std_srvs</run_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>libqt5-core</exec_depend>
+  <exec_depend>libqt5-gui</exec_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>rosconsole</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>roscpp_serialization</exec_depend>
+  <exec_depend>roslib</exec_depend>
+  <exec_depend>rostime</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
 </package>

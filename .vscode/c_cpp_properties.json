@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/src/turtle_food/include/turtlesim/**",
+                "${workspaceFolder}/devel/include/turtle_food/**",
                 "${workspaceFolder}/**",
                 "/opt/ros/kinetic/**",
                 "/usr/include/x86_64-linux-gnu/qt5/**"

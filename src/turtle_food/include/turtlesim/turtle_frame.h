@@ -39,8 +39,10 @@
 # include <ros/ros.h>
 
 # include <std_srvs/Empty.h>
-# include <turtlesim/Spawn.h>
-# include <turtlesim/Kill.h>
+# include <turtle_food/Spawn.h>
+# include <turtle_food/SpawnFood.h>
+# include <turtle_food/Kill.h>
+# include <turtle_food/KillFood.h>
 # include <map>
 
 # include "turtle.h"
@@ -73,10 +75,10 @@ private:
 
   bool clearCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
   bool resetCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
-  bool spawnCallback(turtlesim::Spawn::Request&, turtlesim::Spawn::Response&);
-  bool killCallback(turtlesim::Kill::Request&, turtlesim::Kill::Response&);
-  bool spawnFoodCallback(turtlesim::SpawnFood::Request&, turtlesim::SpawnFood::Response&);
-  bool killFoodCallback(turtlesim::KillFood::Request&, turtlesim::KillFood::Response&);
+  bool spawnCallback(turtle_food::Spawn::Request&, turtle_food::Spawn::Response&);
+  bool killCallback(turtle_food::Kill::Request&, turtle_food::Kill::Response&);
+  bool spawnFoodCallback(turtle_food::SpawnFood::Request&, turtle_food::SpawnFood::Response&);
+  bool killFoodCallback(turtle_food::KillFood::Request&, turtle_food::KillFood::Response&);
 
   ros::NodeHandle nh_;
   QTimer* update_timer_;
@@ -90,7 +92,9 @@ private:
   ros::ServiceServer clear_srv_;
   ros::ServiceServer reset_srv_;
   ros::ServiceServer spawn_srv_;
+  ros::ServiceServer spawn_food_srv_;
   ros::ServiceServer kill_srv_;
+  ros::ServiceServer kill_food_srv_;
 
   typedef std::map<std::string, TurtlePtr> M_Turtle;
   M_Turtle turtles_;

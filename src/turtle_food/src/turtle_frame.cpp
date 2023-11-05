@@ -100,7 +100,9 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
   clear_srv_ = nh_.advertiseService("clear", &TurtleFrame::clearCallback, this);
   reset_srv_ = nh_.advertiseService("reset", &TurtleFrame::resetCallback, this);
   spawn_srv_ = nh_.advertiseService("spawn", &TurtleFrame::spawnCallback, this);
+  spawn_food_srv_ = nh_.advertiseService("spawnFood", &TurtleFrame::spawnFoodCallback, this);
   kill_srv_ = nh_.advertiseService("kill", &TurtleFrame::killCallback, this);
+  kill_food_srv_ = nh_.advertiseService("killFood", &TurtleFrame::killFoodCallback, this);
 
   ROS_INFO("Starting turtlesim with node name %s", ros::this_node::getName().c_str()) ;
 
@@ -127,7 +129,7 @@ TurtleFrame::~TurtleFrame()
   delete update_timer_;
 }
 
-bool TurtleFrame::spawnCallback(turtlesim::Spawn::Request& req, turtlesim::Spawn::Response& res)
+bool TurtleFrame::spawnCallback(turtle_food::Spawn::Request& req, turtle_food::Spawn::Response& res)
 {
   std::string name = spawnTurtle(req.name, req.x, req.y, req.theta);
   if (name.empty())
@@ -141,7 +143,7 @@ bool TurtleFrame::spawnCallback(turtlesim::Spawn::Request& req, turtlesim::Spawn
   return true;
 }
 
-bool TurtleFrame::killCallback(turtlesim::Kill::Request& req, turtlesim::Kill::Response&)
+bool TurtleFrame::killCallback(turtle_food::Kill::Request& req, turtle_food::Kill::Response&)
 {
   M_Turtle::iterator it = turtles_.find(req.name);
   if (it == turtles_.end())
@@ -156,9 +158,9 @@ bool TurtleFrame::killCallback(turtlesim::Kill::Request& req, turtlesim::Kill::R
   return true;
 }
 
-bool TurtleFrame::spawnFoodCallback(turtlesim::SpawnFood::Request& req, turtlesim::SpawnFood::Response& res)
+bool TurtleFrame::spawnFoodCallback(turtle_food::SpawnFood::Request& req, turtle_food::SpawnFood::Response& res)
 {
-  std::string name = spawnFood(req.name, req.x, req.y);
+  std::string name = spawnFood(req.name, req.x, req.y, 0);
   if (name.empty())
   {
     ROS_ERROR("A turtled named [%s] already exists", req.name.c_str());
@@ -170,7 +172,7 @@ bool TurtleFrame::spawnFoodCallback(turtlesim::SpawnFood::Request& req, turtlesi
   return true;
 }
 
-bool TurtleFrame::killFoodCallback(turtlesim::KillFood::Request& req, turtlesim::KillFood::Response&)
+bool TurtleFrame::killFoodCallback(turtle_food::KillFood::Request& req, turtle_food::KillFood::Response&)
 {
   // TODO should I add logic to confirm it's food?
 
