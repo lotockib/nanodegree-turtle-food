@@ -8,6 +8,7 @@
 #include <boost/shared_ptr.hpp>
 #include <turtle_food/Pose.h>
 #include "std_msgs/String.h"
+#include <turtle_food/SpawnFood.h>
 
 #include <QImage>
 #include <QPainter>
@@ -24,6 +25,7 @@ class Food
 		Food(const ros::NodeHandle &nh);
 		void print_food_info();
 		void positionCallback(const turtle_food::Pose::ConstPtr& msg);
+		void spawnFood(ros::NodeHandle n);
 
 	private:
 		std::string name_;
