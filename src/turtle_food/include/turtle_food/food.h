@@ -29,6 +29,9 @@ class Food
 {
 	public:
 		Food(const ros::NodeHandle &nh, int number);
+		void feedingTime();
+
+	private:
 		void print_food_info();
 		void positionCallback(const turtle_food::Pose::ConstPtr& msg);
 		void spawnFood();
@@ -36,7 +39,6 @@ class Food
 		bool foodGone();
 		void waitForTurtle();
 
-	private:
 		std::string name_;
 		int calories_;
 		QPointF pos_x_;

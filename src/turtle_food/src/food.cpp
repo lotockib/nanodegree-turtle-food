@@ -9,6 +9,8 @@ Food::Food(const ros::NodeHandle &nh, int number=10) : name_("base food"), calor
 	nh_ = nh;
 	sub_ = nh_.subscribe("/turtle1/pose", 1000, &Food::positionCallback, this);
 	pose_ = std::make_shared<turtle_food::Pose>();
+	waitForTurtle(); // Wait for turtle to be pubslishing position
+	launchAsync(); // Create task for each food being added
 }
 
 // print loop: just prints using ROS_INFO
@@ -61,15 +63,17 @@ bool Food::foodGone()
 	return true;
 }
 
+void Food::feedingTime()
+{
+	while(!foodGone())
+		{
+			ros::spinOnce();
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		}
+}
+
 void Food::launchAsync()
 {
-	// while(true)
-	// {
-	// 	ros::spinOnce;
-	// 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	// 	if (turtle_comms_running_) { break; }
-	// }
-
 	for (int i = 0; i < 10; i++)
 	{
 		// threads.append(std::thread(&Food::spawnFood, &new_food));
@@ -138,21 +142,8 @@ int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "food");
 	Food new_food = Food(ros::NodeHandle("food_handle"));
-	new_food.waitForTurtle();
-	// ros::spinOnce();
-	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	new_food.launchAsync();
-
-	// while(ros::ok())
-	// {
-	// 	ros::spinOnce();
-	// 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
-	// }
-
-	// ros::spin();
-
+	new_food.feedingTime();
 	return 0;
-
 }
 
 // }
