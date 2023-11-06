@@ -5,15 +5,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "turtle_sim",
-			"type": "ros",
-			"request": "launch",
-			"target": "/home/brad/nanodegree-turtle-food/src/turtle_food/launch/sim.launch"
-		},
-		{
-			"name": "turtle_food",
+			"name": "ROS: Launch",
 			"request": "launch",
 			"target": "/home/brad/nanodegree-turtle-food/src/turtle_food/launch/food.launch",
+			"launch": [
+				"rviz",
+				"gz",
+				"gzclient",
+				"gzserver"
+			],
 			"type": "ros"
 		}
 	]

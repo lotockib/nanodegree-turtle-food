@@ -14,6 +14,7 @@
 #include <future>
 #include <random>
 #include <memory>
+#include <math.h>	
 
 
 #include <QImage>
@@ -38,6 +39,7 @@ class Food
 		void launchAsync();
 		bool foodGone();
 		void waitForTurtle();
+		float calculateDistance(float x1, float y1, float x2, float y2);
 
 		std::string name_;
 		int calories_;
@@ -50,6 +52,8 @@ class Food
 		std::shared_ptr<turtle_food::Pose> pose_;
 		bool turtle_comms_running_;
 		std::vector<std::future<void>> food_futures_;
+		float distance_;
+		float threshold_;
 };
 
 #endif // TURTLE_FOOD_H
