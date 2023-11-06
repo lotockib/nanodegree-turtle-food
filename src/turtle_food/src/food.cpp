@@ -1,4 +1,5 @@
 #include "turtle_food/food.h"
+#include <sstream> 
 
 // namespace turtlesim
 // {
@@ -29,16 +30,35 @@ void nonClassCallback(const turtle_food::Pose::ConstPtr& msg)
 
 void Food::spawnFood()
 {
+		// counter_++;
+
+    // stringstream object
+    std::stringstream stream;
+    
+    // insertion of integer variable to stream
+    stream << counter_++;
+    
+    // variable to hold the new variable from the stream
+    std::string counter;
+    
+    // extraction of string type of the integer variable
+    stream >> counter;
+    
+    // cout << "The user is " + age_as_string + " years old";
+    // The user is 20 years old
+
+		std::string full_name = "food" + counter;
+
 	/* Spawn food manually */
 	ros::NodeHandle n;
 	ros::ServiceClient client = n.serviceClient<turtle_food::SpawnFood>("spawnFood");
 	turtle_food::SpawnFood new_food_srv;
-	std::string name = "food1";
-	x_ += 0.5;
-	y_ += 0.5;
+	// std::string name = "food1";
+	x_ += 1;
+	y_ += 1;
 	new_food_srv.request.x = x_;
 	new_food_srv.request.y = y_;
-	new_food_srv.request.name = name;	
+	new_food_srv.request.name = full_name;	
 	if (client.call(new_food_srv))
   {
     ROS_INFO("Food created: %s", new_food_srv.response.name.c_str());
@@ -57,7 +77,10 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "food");
 	Food new_food = Food(ros::NodeHandle("food_handle"));
 
-	new_food.spawnFood();
+	for (int i = 0; i < 5; i++)
+	{
+		new_food.spawnFood();
+	}
 
 	ROS_INFO("Listenening for turtle1/pose");
 	ros::spin();

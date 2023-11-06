@@ -36,6 +36,7 @@ class Food
 		ros::NodeHandle nh_;
 		float x_;
 		float y_;
+		int counter_;
 };
 
 #endif // TURTLE_FOOD_H
