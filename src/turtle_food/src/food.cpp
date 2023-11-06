@@ -1,11 +1,12 @@
 #include "turtle_food/food.h"
 #include <sstream> 
+#include <thread>
 
 // namespace turtlesim
 // {
 
 // class: contains name of class
-Food::Food(const ros::NodeHandle &nh) : name_("base food"), calories_(0), x_(0), y_(0)
+Food::Food(const ros::NodeHandle &nh) : name_("base food"), calories_(0)
 {
 	nh_ = nh;
 	sub_ = nh_.subscribe("/turtle1/pose", 1000, &Food::positionCallback, this);
@@ -58,12 +59,10 @@ void Food::spawnFood()
 	// tried to use std::mt19937 but got compile errors I could not solve
 	int min = 0;
 	int max = 10;
-	int output = min + (rand() % static_cast<int>(max - min + 1));
-
-	x_ = min + (rand() % static_cast<int>(max - min + 1));;
-	y_ = min + (rand() % static_cast<int>(max - min + 1));;
-	new_food_srv.request.x = x_;
-	new_food_srv.request.y = y_;
+	float x = min + (rand() % static_cast<int>(max - min + 1));;
+	float y = min + (rand() % static_cast<int>(max - min + 1));;
+	new_food_srv.request.x = x;
+	new_food_srv.request.y = y;
 	new_food_srv.request.name = full_name;	
 	if (client.call(new_food_srv))
   {
@@ -83,11 +82,15 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "food");
 	Food new_food = Food(ros::NodeHandle("food_handle"));
 
-	for (int i = 0; i < 5; i++)
-	{
-		new_food.spawnFood();
-	}
+	// for (int i = 0; i < 5; i++)
+	// {
+	// 	new_food.spawnFood();
+	// }
 
+	std::thread t1 = std::thread(&Food::spawnFood, &new_food);
+
+	t1.join();
+	
 	ROS_INFO("Listenening for turtle1/pose");
 	ros::spin();
 

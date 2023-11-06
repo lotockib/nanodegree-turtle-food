@@ -34,8 +34,6 @@ class Food
 		QPointF pos_y_;
 		ros::Subscriber sub_;
 		ros::NodeHandle nh_;
-		float x_;
-		float y_;
 		int counter_;
 };
 
