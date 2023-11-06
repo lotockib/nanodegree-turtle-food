@@ -9,6 +9,11 @@
 #include <turtle_food/Pose.h>
 #include "std_msgs/String.h"
 #include <turtle_food/SpawnFood.h>
+#include <turtle_food/KillFood.h>
+#include <thread>
+#include <future>
+#include <random>
+
 
 #include <QImage>
 #include <QPainter>
@@ -22,7 +27,7 @@
 class Food
 {
 	public:
-		Food(const ros::NodeHandle &nh);
+		Food(const ros::NodeHandle &nh, int number);
 		void print_food_info();
 		void positionCallback(const turtle_food::Pose::ConstPtr& msg);
 		void spawnFood();
@@ -35,6 +40,7 @@ class Food
 		ros::Subscriber sub_;
 		ros::NodeHandle nh_;
 		int counter_;
+		int number_;
 };
 
 #endif // TURTLE_FOOD_H

@@ -55,7 +55,10 @@
 		"cinttypes": "cpp",
 		"utility": "cpp",
 		"typeindex": "cpp",
-		"typeinfo": "cpp"
+		"typeinfo": "cpp",
+		"condition_variable": "cpp",
+		"future": "cpp",
+		"mutex": "cpp"
 	},
 	"C_Cpp.default.compilerPath": "/usr/bin/gcc",
 	"ros.distro": "kinetic",

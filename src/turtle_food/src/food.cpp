@@ -1,12 +1,10 @@
 #include "turtle_food/food.h"
-#include <sstream> 
-#include <thread>
 
 // namespace turtlesim
 // {
 
 // class: contains name of class
-Food::Food(const ros::NodeHandle &nh) : name_("base food"), calories_(0)
+Food::Food(const ros::NodeHandle &nh, int number=10) : name_("base food"), calories_(0), counter_(0), number_(number)
 {
 	nh_ = nh;
 	sub_ = nh_.subscribe("/turtle1/pose", 1000, &Food::positionCallback, this);
@@ -31,39 +29,26 @@ void nonClassCallback(const turtle_food::Pose::ConstPtr& msg)
 
 void Food::spawnFood()
 {
-		// counter_++;
+	// Create name using static counter
+	std::string full_name = "food" + std::to_string(counter_++);
 
-    // stringstream object
-    std::stringstream stream;
-    
-    // insertion of integer variable to stream
-    stream << counter_++;
-    
-    // variable to hold the new variable from the stream
-    std::string counter;
-    
-    // extraction of string type of the integer variable
-    stream >> counter;
-    
-    // cout << "The user is " + age_as_string + " years old";
-    // The user is 20 years old
+	/* Spawn food */
 
-		std::string full_name = "food" + counter;
-
-	/* Spawn food manually */
+	// Create service to spawn
 	ros::NodeHandle n;
 	ros::ServiceClient client = n.serviceClient<turtle_food::SpawnFood>("spawnFood");
 	turtle_food::SpawnFood new_food_srv;
-	// std::string name = "food1";
 
-	// tried to use std::mt19937 but got compile errors I could not solve
-	int min = 0;
-	int max = 10;
-	float x = min + (rand() % static_cast<int>(max - min + 1));;
-	float y = min + (rand() % static_cast<int>(max - min + 1));;
-	new_food_srv.request.x = x;
-	new_food_srv.request.y = y;
+	// Create random position of food
+	std::random_device rd;     // Seed
+	std::mt19937 rng(rd());    // Random number generator
+	std::uniform_real_distribution<> dis(0.0f, 10.0f);
+	float random_integer = dis(rng);
+	new_food_srv.request.x = dis(rng);
+	new_food_srv.request.y = dis(rng);
 	new_food_srv.request.name = full_name;	
+
+	// Send service request to spawn
 	if (client.call(new_food_srv))
   {
     ROS_INFO("Food created: %s", new_food_srv.response.name.c_str());
@@ -73,6 +58,27 @@ void Food::spawnFood()
     ROS_ERROR("Failed to call service spawn food");
     return;
   }
+
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+
+	/* Kill food */
+
+	// Create service to kill
+	ros::ServiceClient client_kill = n.serviceClient<turtle_food::KillFood>("killFood");
+	turtle_food::KillFood kill_food_srv;
+
+	// Send service request to kill
+	kill_food_srv.request.name = full_name;
+	if (client_kill.call(kill_food_srv))
+  {
+    ROS_INFO("Food killed: %s", full_name.c_str());
+  }
+  else
+  {
+    ROS_ERROR("Failed to call service kill food");
+    return;
+  }
+
 	return;
 }
 
@@ -82,17 +88,18 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "food");
 	Food new_food = Food(ros::NodeHandle("food_handle"));
 
-	// for (int i = 0; i < 5; i++)
-	// {
-	// 	new_food.spawnFood();
-	// }
+	std::vector<std::future<void>> futures;
 
-	std::thread t1 = std::thread(&Food::spawnFood, &new_food);
-
-	t1.join();
+	for (int i = 0; i < 10; i++)
+	{
+		// threads.append(std::thread(&Food::spawnFood, &new_food));
+		futures.emplace_back(std::async(std::launch::async, &Food::spawnFood, &new_food));
+	}
 	
-	ROS_INFO("Listenening for turtle1/pose");
-	ros::spin();
+	for (const std::future<void> &ftr : futures)
+	{
+		ftr.wait();
+	}
 
 	return 0;
 
