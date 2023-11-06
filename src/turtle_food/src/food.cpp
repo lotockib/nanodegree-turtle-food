@@ -54,8 +54,14 @@ void Food::spawnFood()
 	ros::ServiceClient client = n.serviceClient<turtle_food::SpawnFood>("spawnFood");
 	turtle_food::SpawnFood new_food_srv;
 	// std::string name = "food1";
-	x_ += 1;
-	y_ += 1;
+
+	// tried to use std::mt19937 but got compile errors I could not solve
+	int min = 0;
+	int max = 10;
+	int output = min + (rand() % static_cast<int>(max - min + 1));
+
+	x_ = min + (rand() % static_cast<int>(max - min + 1));;
+	y_ = min + (rand() % static_cast<int>(max - min + 1));;
 	new_food_srv.request.x = x_;
 	new_food_srv.request.y = y_;
 	new_food_srv.request.name = full_name;	
