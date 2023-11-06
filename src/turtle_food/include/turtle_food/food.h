@@ -13,6 +13,7 @@
 #include <thread>
 #include <future>
 #include <random>
+#include <memory>
 
 
 #include <QImage>
@@ -31,6 +32,9 @@ class Food
 		void print_food_info();
 		void positionCallback(const turtle_food::Pose::ConstPtr& msg);
 		void spawnFood();
+		void launchAsync();
+		bool foodGone();
+		void waitForTurtle();
 
 	private:
 		std::string name_;
@@ -41,6 +45,9 @@ class Food
 		ros::NodeHandle nh_;
 		int counter_;
 		int number_;
+		std::shared_ptr<turtle_food::Pose> pose_;
+		bool turtle_comms_running_;
+		std::vector<std::future<void>> food_futures_;
 };
 
 #endif // TURTLE_FOOD_H

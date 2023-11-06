@@ -4,10 +4,11 @@
 // {
 
 // class: contains name of class
-Food::Food(const ros::NodeHandle &nh, int number=10) : name_("base food"), calories_(0), counter_(0), number_(number)
+Food::Food(const ros::NodeHandle &nh, int number=10) : name_("base food"), calories_(0), counter_(0), number_(number), turtle_comms_running_(false)
 {
 	nh_ = nh;
 	sub_ = nh_.subscribe("/turtle1/pose", 1000, &Food::positionCallback, this);
+	pose_ = std::make_shared<turtle_food::Pose>();
 }
 
 // print loop: just prints using ROS_INFO
@@ -19,12 +20,61 @@ void Food::print_food_info()
 // callback to lister to turtle position
 void Food::positionCallback(const turtle_food::Pose::ConstPtr& msg)
 {
+	if (!turtle_comms_running_) { turtle_comms_running_ = true; }
 	ROS_INFO("I heard: [%f] [%f]", msg->x, msg->y);
+	pose_->x = msg->x;
+	pose_->y = msg->y;
 }
 
-void nonClassCallback(const turtle_food::Pose::ConstPtr& msg)
+void Food::waitForTurtle()	
 {
-	ROS_INFO("I heard: [%f] [%f]", msg->x, msg->y);
+	while (!turtle_comms_running_)
+	{
+		ros::spinOnce();
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	}
+	return;
+}
+
+bool Food::foodGone()
+{
+	if (food_futures_.empty())
+	{ 
+		return true;
+	}
+
+	for (int i = 0; i < food_futures_.size(); i++)
+	{
+		try
+		{
+			food_futures_[i].wait_for(std::chrono::milliseconds(10));
+			food_futures_.erase(food_futures_.begin() + i);
+		}
+		catch(const std::exception& e)
+		{
+			// do nothing, this task is still running
+			return false;
+		}
+	}
+
+	// each food future successfully erased, now it is empty
+	return true;
+}
+
+void Food::launchAsync()
+{
+	// while(true)
+	// {
+	// 	ros::spinOnce;
+	// 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	// 	if (turtle_comms_running_) { break; }
+	// }
+
+	for (int i = 0; i < 10; i++)
+	{
+		// threads.append(std::thread(&Food::spawnFood, &new_food));
+		food_futures_.emplace_back(std::async(std::launch::async, &Food::spawnFood, this));
+	}
 }
 
 void Food::spawnFood()
@@ -60,6 +110,7 @@ void Food::spawnFood()
   }
 
 	std::this_thread::sleep_for(std::chrono::seconds(1));
+	ROS_INFO("Food %s detects turtle at [%f] [%f]", full_name.c_str(), pose_->x, pose_->y);
 
 	/* Kill food */
 
@@ -87,19 +138,18 @@ int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "food");
 	Food new_food = Food(ros::NodeHandle("food_handle"));
+	new_food.waitForTurtle();
+	// ros::spinOnce();
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	new_food.launchAsync();
 
-	std::vector<std::future<void>> futures;
+	// while(ros::ok())
+	// {
+	// 	ros::spinOnce();
+	// 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	// }
 
-	for (int i = 0; i < 10; i++)
-	{
-		// threads.append(std::thread(&Food::spawnFood, &new_food));
-		futures.emplace_back(std::async(std::launch::async, &Food::spawnFood, &new_food));
-	}
-	
-	for (const std::future<void> &ftr : futures)
-	{
-		ftr.wait();
-	}
+	// ros::spin();
 
 	return 0;
 

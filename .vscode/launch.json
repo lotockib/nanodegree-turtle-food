@@ -5,9 +5,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "turtlesim",
+			"name": "turtle_sim",
+			"type": "ros",
 			"request": "launch",
-			"target": "/home/workspace/nanodegree-turtle-food/src/turtle_food/launch/sim.launch",
+			"target": "/home/brad/nanodegree-turtle-food/src/turtle_food/launch/sim.launch"
+		},
+		{
+			"name": "turtle_food",
+			"request": "launch",
+			"target": "/home/brad/nanodegree-turtle-food/src/turtle_food/launch/food.launch",
 			"type": "ros"
 		}
 	]
