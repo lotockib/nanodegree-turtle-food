@@ -10,5 +10,5 @@ roscore &
 sleep 2
 rosrun turtle_food turtlesim_node & 
 rosrun turtle_food food_node "$@" &
-bash $dir/run_turtle.sh
+bash $dir/start_teleop.sh
 wait
