@@ -88,6 +88,7 @@ void Food::launchAsync()
 void Food::spawnFood()
 {
 	// Create name using static counter
+	// TODO  std::lock_guard
 	std::string full_name = "food" + std::to_string(counter_++);
 
 	/* Spawn food */
