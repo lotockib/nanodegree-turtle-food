@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "turtlesim/turtle.h"
+#include "turtle_food/turtle.h"
 
 #include <QColor>
 #include <QRgb>
@@ -36,7 +36,7 @@
 #define DEFAULT_PEN_G 0xb8
 #define DEFAULT_PEN_B 0xff
 
-namespace turtlesim
+namespace turtle_food
 {
 
 Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPointF& pos, float orient)
@@ -52,8 +52,8 @@ Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPoi
   pen_.setWidth(3);
 
   velocity_sub_ = nh_.subscribe("cmd_vel", 1, &Turtle::velocityCallback, this);
-  pose_pub_ = nh_.advertise<Pose>("pose", 1);
-  color_pub_ = nh_.advertise<Color>("color_sensor", 1);
+  pose_pub_ = nh_.advertise<turtle_food::Pose>("pose", 1);
+  color_pub_ = nh_.advertise<turtle_food::Color>("color_sensor", 1);
   set_pen_srv_ = nh_.advertiseService("set_pen", &Turtle::setPenCallback, this);
   teleport_relative_srv_ = nh_.advertiseService("teleport_relative", &Turtle::teleportRelativeCallback, this);
   teleport_absolute_srv_ = nh_.advertiseService("teleport_absolute", &Turtle::teleportAbsoluteCallback, this);
@@ -70,7 +70,7 @@ void Turtle::velocityCallback(const geometry_msgs::Twist::ConstPtr& vel)
   ang_vel_ = vel->angular.z;
 }
 
-bool Turtle::setPenCallback(turtlesim::SetPen::Request& req, turtlesim::SetPen::Response&)
+bool Turtle::setPenCallback(turtle_food::SetPen::Request& req, turtle_food::SetPen::Response&)
 {
   pen_on_ = !req.off;
   if (req.off)
@@ -88,13 +88,13 @@ bool Turtle::setPenCallback(turtlesim::SetPen::Request& req, turtlesim::SetPen::
   return true;
 }
 
-bool Turtle::teleportRelativeCallback(turtlesim::TeleportRelative::Request& req, turtlesim::TeleportRelative::Response&)
+bool Turtle::teleportRelativeCallback(turtle_food::TeleportRelative::Request& req, turtle_food::TeleportRelative::Response&)
 {
   teleport_requests_.push_back(TeleportRequest(0, 0, req.angular, req.linear, true));
   return true;
 }
 
-bool Turtle::teleportAbsoluteCallback(turtlesim::TeleportAbsolute::Request& req, turtlesim::TeleportAbsolute::Response&)
+bool Turtle::teleportAbsoluteCallback(turtle_food::TeleportAbsolute::Request& req, turtle_food::TeleportAbsolute::Response&)
 {
   teleport_requests_.push_back(TeleportRequest(req.x, req.y, req.theta, 0, false));
   return true;
@@ -143,7 +143,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   teleport_requests_.clear();
 
-  if (ros::WallTime::now() - last_command_time_ > ros::WallDuration(1.0))
+  if (ros::WallTime::now() - last_command_time_ > ros::WallDuration(0.5))
   {
     lin_vel_ = 0.0;
     ang_vel_ = 0.0;
@@ -159,14 +159,14 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   if (pos_.x() < 0 || pos_.x() > canvas_width ||
       pos_.y() < 0 || pos_.y() > canvas_height)
   {
-    ROS_WARN("Oh no! I hit the wall! (Clamping from [x=%f, y=%f])", pos_.x(), pos_.y());
+    // ROS_WARN("Oh no! I hit the wall! (Clamping from [x=%f, y=%f])", pos_.x(), pos_.y());
   }
 
   pos_.setX(std::min(std::max(static_cast<double>(pos_.x()), 0.0), static_cast<double>(canvas_width)));
   pos_.setY(std::min(std::max(static_cast<double>(pos_.y()), 0.0), static_cast<double>(canvas_height)));
 
   // Publish pose of the turtle
-  Pose p;
+  turtle_food::Pose p;
   p.x = pos_.x();
   p.y = canvas_height - pos_.y();
   p.theta = orient_;
@@ -176,7 +176,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   // Figure out (and publish) the color underneath the turtle
   {
-    Color color;
+    turtle_food::Color color;
     QRgb pixel = path_image.pixel((pos_ * meter_).toPoint());
     color.r = qRed(pixel);
     color.g = qGreen(pixel);

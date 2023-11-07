@@ -1,0 +1,5 @@
+<launch>
+	<group ns="turtle_food1">
+	       <node pkg="turtle_food" name="sim" type="food_node"/>
+	</group>
+</launch>

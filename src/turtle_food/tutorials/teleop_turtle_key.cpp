@@ -77,9 +77,9 @@ void TeleopTurtle::keyLoop()
   raw.c_cc[VEOF] = 2;
   tcsetattr(kfd, TCSANOW, &raw);
 
-  puts("Reading from keyboard");
-  puts("---------------------------");
-  puts("Use arrow keys to move the turtle.");
+  puts("Reading from keyboard: Use arrow keys to move the turtle.");
+  // puts("---------------------------");
+  // puts("Use arrow keys to move the turtle.");
 
 
   for(;;)

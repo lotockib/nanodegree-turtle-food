@@ -14,8 +14,9 @@ do
         fi
     fi
 done <"$bashrc"
-echo "export PATH="~/miniconda3/bin:$PATH"" >> ~/.bashrc
-echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+echo "export PATH="~/miniconda3/bin:$PATH"" >> ~/.bashrc # just to match typical udacity vm config
+# echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+echo "alias sdv='source /opt/ros/kinetic/setup.bash && source $PWD/devel/setup.bash'" >> ~/.bashrc # source alias
 
 # Setup sources
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'

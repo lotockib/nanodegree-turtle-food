@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "turtlesim/turtle_frame.h"
+#include "turtle_food/turtle_frame.h"
 
 #include <QPointF>
 
@@ -39,7 +39,7 @@
 #define DEFAULT_BG_G 0x56
 #define DEFAULT_BG_B 0xff
 
-namespace turtlesim
+namespace turtle_food
 {
 
 TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
@@ -85,6 +85,13 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
     turtle_images_.append(img);
   }
 
+  QVector<QString> food;
+  food.append("apple.png"); // from https://www.flaticon.com/free-icon/apple_415733
+  QString images_food_path = (ros::package::getPath("turtle_food") + "/images_food/").c_str();
+  QImage img;
+  img.load(images_food_path + food[0]);
+  food_images_.append(img);
+
   meter_ = turtle_images_[0].height();
 
   clear();
@@ -92,13 +99,16 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
   clear_srv_ = nh_.advertiseService("clear", &TurtleFrame::clearCallback, this);
   reset_srv_ = nh_.advertiseService("reset", &TurtleFrame::resetCallback, this);
   spawn_srv_ = nh_.advertiseService("spawn", &TurtleFrame::spawnCallback, this);
+  spawn_food_srv_ = nh_.advertiseService("spawnFood", &TurtleFrame::spawnFoodCallback, this);
   kill_srv_ = nh_.advertiseService("kill", &TurtleFrame::killCallback, this);
+  kill_food_srv_ = nh_.advertiseService("killFood", &TurtleFrame::killFoodCallback, this);
 
   ROS_INFO("Starting turtlesim with node name %s", ros::this_node::getName().c_str()) ;
 
   width_in_meters_ = (width() - 1) / meter_;
   height_in_meters_ = (height() - 1) / meter_;
   spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
+  // spawnFood("apple", width_in_meters_ / 4.0, height_in_meters_ * 0.75, 0);
 
   // spawn all available turtle types
   if(false)
@@ -118,7 +128,7 @@ TurtleFrame::~TurtleFrame()
   delete update_timer_;
 }
 
-bool TurtleFrame::spawnCallback(turtlesim::Spawn::Request& req, turtlesim::Spawn::Response& res)
+bool TurtleFrame::spawnCallback(turtle_food::Spawn::Request& req, turtle_food::Spawn::Response& res)
 {
   std::string name = spawnTurtle(req.name, req.x, req.y, req.theta);
   if (name.empty())
@@ -132,7 +142,7 @@ bool TurtleFrame::spawnCallback(turtlesim::Spawn::Request& req, turtlesim::Spawn
   return true;
 }
 
-bool TurtleFrame::killCallback(turtlesim::Kill::Request& req, turtlesim::Kill::Response&)
+bool TurtleFrame::killCallback(turtle_food::Kill::Request& req, turtle_food::Kill::Response&)
 {
   M_Turtle::iterator it = turtles_.find(req.name);
   if (it == turtles_.end())
@@ -143,6 +153,39 @@ bool TurtleFrame::killCallback(turtlesim::Kill::Request& req, turtlesim::Kill::R
 
   turtles_.erase(it);
   update();
+
+  return true;
+}
+
+bool TurtleFrame::spawnFoodCallback(turtle_food::SpawnFood::Request& req, turtle_food::SpawnFood::Response& res)
+{
+  std::string name = spawnFood(req.name, req.x, req.y, 0);
+  if (name.empty())
+  {
+    ROS_ERROR("A turtled named [%s] already exists", req.name.c_str());
+    return false;
+  }
+
+  res.name = name;
+
+  return true;
+}
+
+bool TurtleFrame::killFoodCallback(turtle_food::KillFood::Request& req, turtle_food::KillFood::Response&)
+{
+
+
+  M_Turtle::iterator it = turtles_.find(req.name);
+  if (it == turtles_.end())
+  {
+    ROS_ERROR("Tried to kill turtle [%s], which does not exist", req.name.c_str());
+    return false;
+  }
+
+  turtles_.erase(it);
+  update();
+
+  ROS_INFO("Food [%s] has been eaten", req.name.c_str());
 
   return true;
 }
@@ -185,6 +228,37 @@ std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, 
 
   return real_name;
 }
+
+
+std::string TurtleFrame::spawnFood(const std::string& name, float x, float y, size_t index)
+{
+  std::string real_name = name;
+  // if (real_name.empty())
+  // {
+  //   do
+  //   {
+  //     std::stringstream ss;
+  //     ss << "turtle" << ++id_counter_;
+  //     real_name = ss.str();
+  //   } while (hasTurtle(real_name));
+  // }
+  // else
+  // {
+  //   if (hasTurtle(real_name))
+  //   {
+  //     return "";
+  //   }
+  // }
+  
+  TurtlePtr t(new Turtle(ros::NodeHandle(real_name), food_images_[index], QPointF(x, height_in_meters_ - y), PI / 2));
+  turtles_[real_name] = t;
+  update();
+
+  ROS_INFO("Spawning food [%s] at x=[%f], y=[%f]", real_name.c_str(), x, y);
+
+  return real_name;
+}
+
 
 void TurtleFrame::clear()
 {
