@@ -37,7 +37,7 @@ class Food
 	private:
 		void print_food_info();
 		void positionCallback(const turtle_food::Pose::ConstPtr& msg);
-		void spawnFood();
+		std::string spawnFood();
 		void launchAsync();
 		bool foodGone();
 		void waitForTurtle();
@@ -53,7 +53,7 @@ class Food
 		int num_food_;
 		std::shared_ptr<turtle_food::Pose> pose_;
 		bool turtle_comms_running_;
-		std::vector<std::future<void>> food_futures_;
+		std::vector<std::future<std::string>> food_futures_;
 		float distance_;
 		float threshold_;
 		std::mutex mutex_;

@@ -174,7 +174,7 @@ bool TurtleFrame::spawnFoodCallback(turtle_food::SpawnFood::Request& req, turtle
 
 bool TurtleFrame::killFoodCallback(turtle_food::KillFood::Request& req, turtle_food::KillFood::Response&)
 {
-  // TODO should I add logic to confirm it's food?
+
 
   M_Turtle::iterator it = turtles_.find(req.name);
   if (it == turtles_.end())
@@ -185,6 +185,8 @@ bool TurtleFrame::killFoodCallback(turtle_food::KillFood::Request& req, turtle_f
 
   turtles_.erase(it);
   update();
+
+  ROS_INFO("Food [%s] has been eaten", req.name.c_str());
 
   return true;
 }

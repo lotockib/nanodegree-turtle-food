@@ -159,7 +159,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   if (pos_.x() < 0 || pos_.x() > canvas_width ||
       pos_.y() < 0 || pos_.y() > canvas_height)
   {
-    ROS_WARN("Oh no! I hit the wall! (Clamping from [x=%f, y=%f])", pos_.x(), pos_.y());
+    // ROS_WARN("Oh no! I hit the wall! (Clamping from [x=%f, y=%f])", pos_.x(), pos_.y());
   }
 
   pos_.setX(std::min(std::max(static_cast<double>(pos_.x()), 0.0), static_cast<double>(canvas_width)));

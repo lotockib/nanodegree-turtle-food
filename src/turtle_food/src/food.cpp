@@ -42,28 +42,22 @@ void Food::waitForTurtle()
 
 bool Food::foodGone()
 {
-	if (food_futures_.empty())
-	{ 
-		return true;
-	}
 
-	for (int i = 0; i < food_futures_.size(); i++)
+	for (auto & ftr : food_futures_)
 	{
-		try
+		if (ftr.valid())
 		{
-			food_futures_[i].wait_for(std::chrono::milliseconds(10));
-			food_futures_.erase(food_futures_.begin() + i);
-			ROS_INFO("FOOD WAS EATEN Size of futures = %d", (int) food_futures_.size());
-		}
-		catch(const std::exception& e)
-		{
-			// do nothing, this task is still running
-			return false;
+			if (ftr.wait_for(std::chrono::milliseconds(10)) == std::future_status::ready)
+			{
+				ftr.get(); // get the future to force it invalid
+			} else {
+				return false; // there's at least one valid future that isn't ready to be read yet, food not gone
+			}
 		}
 	}
 
 	// each food future successfully erased, now it is empty
-	ROS_INFO("All food has been eaten!  Size of futures = %d", (int) food_futures_.size());
+	ROS_INFO("ALL FOOD HAS BEEN EATEN!");
 	return true;
 }
 
@@ -80,12 +74,11 @@ void Food::launchAsync()
 {
 	for (int i = 0; i < num_food_; i++)
 	{
-		// threads.append(std::thread(&Food::spawnFood, &new_food));
 		food_futures_.emplace_back(std::async(std::launch::async, &Food::spawnFood, this));
 	}
 }
 
-void Food::spawnFood()
+std::string Food::spawnFood()
 {
 	// Create name using static counter
 	mutex_.lock(); // counter_ is shared across tasks, so lock when modifying
@@ -122,7 +115,7 @@ void Food::spawnFood()
 	if (!client.call(new_food_srv))
   {
     ROS_ERROR("Failed to call service spawn food");
-		return;
+		return full_name;
   }
 
 	/* Kill food */
@@ -143,7 +136,7 @@ void Food::spawnFood()
     ROS_ERROR("Failed to call service kill food");
   }
 
-	return;
+	return full_name;
 }
 
 float Food::calculateDistance(float x1, float y1, float x2, float y2)
@@ -172,8 +165,6 @@ int main(int argc, char **argv)
 	}
 
 	Food new_food(ros::NodeHandle("food_handle"), num_apples);
-
-	// Food new_food = Food(ros::NodeHandle("food_handle"));
 	new_food.feedingTime();
 	return 0;
 }
