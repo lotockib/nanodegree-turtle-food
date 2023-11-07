@@ -53,6 +53,7 @@ bool Food::foodGone()
 		{
 			food_futures_[i].wait_for(std::chrono::milliseconds(10));
 			food_futures_.erase(food_futures_.begin() + i);
+			ROS_INFO("FOOD WAS EATEN Size of futures = %d", (int) food_futures_.size());
 		}
 		catch(const std::exception& e)
 		{
@@ -62,7 +63,7 @@ bool Food::foodGone()
 	}
 
 	// each food future successfully erased, now it is empty
-	ROS_INFO("All food has been eaten!");
+	ROS_INFO("All food has been eaten!  Size of futures = %d", (int) food_futures_.size());
 	return true;
 }
 
@@ -125,8 +126,6 @@ void Food::spawnFood()
 	/* Kill food */
 	while(calculateDistance(food_x, food_y, pose_->x, pose_->y) > threshold_)
 	{
-		// ROS_INFO("Food %s detects turtle at [%f] [%f]", full_name.c_str(), pose_->x, pose_->y);
-		// ROS_INFO("Food %s is located at [%f] [%f]", full_name.c_str(), food_x, food_y);
 		ros::spinOnce();
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
@@ -158,7 +157,6 @@ int main(int argc, char **argv)
 	// Food new_food;
 	ros::init(argc, argv, "food");
 
-	// ROS_INFO("argc = %d", argc);
 	// Pass number of apples if provided
 	int num_apples;
 	if (argc == 2)

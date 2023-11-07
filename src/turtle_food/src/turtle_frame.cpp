@@ -223,7 +223,6 @@ std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, 
   turtles_[real_name] = t;
   update();
 
-  ROS_INFO("turtle height = %d", turtle_images_[index].height());
   ROS_INFO("Spawning turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
 
   return real_name;

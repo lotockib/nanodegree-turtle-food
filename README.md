@@ -43,8 +43,31 @@ You must be running a fresh install of Ubuntu 16.04, or using a Udacity virtual 
     rosrun beginner_tutorials listener
     ```
 
+# Project Overview
+
+This project was developed starting with the [ros turtlesim code](https://github.com/ros/ros_tutorials).  Some of the pre-existing code was edited:
+
+
 # Rubric
 
 This section describes how the Capstone project rubric is satisfied.
 
-#TODO consider having comments "RUBRIC" in the code with description in addition to here.
+## A README with instructions is included with the project
+
+Specification:
+```
+The README is included with the project and has instructions for building/running the project.
+If any additional libraries are needed to run the project, these are indicated with cross-platform installation instructions.
+You can submit your writeup as markdown or pdf.
+```
+Fulfilled:
+See [Setup section of this README](#setup)
+
+## The README indicates which project is chosen.
+```
+The README describes the project you have built.
+The README also indicates the file and class structure, along with the expected behavior or output of the program.
+```
+
+
+
