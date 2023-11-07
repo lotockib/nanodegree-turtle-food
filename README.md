@@ -52,7 +52,7 @@ Use arrow keys to drive the turtle to each apple and eat them.
 
 Close the GUI and the terminal when done.
 
-#TODO add gif
+![](./turtle_food.gif)
 
 # Project Details
 
