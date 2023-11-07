@@ -17,16 +17,10 @@
 #include <memory>
 #include <math.h>	
 #include <mutex>
-
-
 #include <QImage>
 #include <QPainter>
 #include <QPen>
 #include <QPointF>
-
-// TODO namespace wont build, is this needed?
-// namespace turtlesim
-// {
 
 class Food
 {
@@ -60,5 +54,3 @@ class Food
 };
 
 #endif // TURTLE_FOOD_H
-
-// }

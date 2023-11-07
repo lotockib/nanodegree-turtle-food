@@ -85,7 +85,6 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
     turtle_images_.append(img);
   }
 
-  // Food TODO add other food
   QVector<QString> food;
   food.append("apple.png"); // from https://www.flaticon.com/free-icon/apple_415733
   QString images_food_path = (ros::package::getPath("turtle_food") + "/images_food/").c_str();

@@ -1,10 +1,7 @@
 #include "turtle_food/food.h"
 #include <string>
 
-// namespace turtlesim
-// {
-
-// class: contains name of class
+// class: waits for turtle to be active and launchs food tasks
 Food::Food(const ros::NodeHandle &nh, int number=100) 
 : name_("base food"), calories_(0), counter_(0), num_food_(number), turtle_comms_running_(false), threshold_(1.0)
 {
@@ -30,6 +27,7 @@ void Food::positionCallback(const turtle_food::Pose::ConstPtr& msg)
 	pose_->y = msg->y;
 }
 
+// wait for incoming turtle messages
 void Food::waitForTurtle()	
 {
 	while (!turtle_comms_running_)
@@ -40,6 +38,7 @@ void Food::waitForTurtle()
 	return;
 }
 
+// check if any food remains, return true for yes, false for no
 bool Food::foodGone()
 {
 
@@ -61,6 +60,7 @@ bool Food::foodGone()
 	return true;
 }
 
+// wait for user to eat all the food
 void Food::feedingTime()
 {
 	while(!foodGone())
@@ -70,6 +70,7 @@ void Food::feedingTime()
 		}
 }
 
+// launch async tasks, one for each food item
 void Food::launchAsync()
 {
 	for (int i = 0; i < num_food_; i++)
@@ -78,6 +79,7 @@ void Food::launchAsync()
 	}
 }
 
+// create food item by sending message to turtlesim_node
 std::string Food::spawnFood()
 {
 	// Create name using static counter
@@ -90,9 +92,7 @@ std::string Food::spawnFood()
 	// Create service to spawn
 	ros::NodeHandle n;
 	ros::ServiceClient client = n.serviceClient<turtle_food::SpawnFood>("spawnFood");
-	// ros::ServiceClient client = n.serviceClient<turtle_food::Spawn>("spawn");
 	turtle_food::SpawnFood new_food_srv;
-	// turtle_food::Spawn new_food_srv;
 
 	// Create random position of food
 	std::random_device rd;     // Seed
@@ -139,6 +139,7 @@ std::string Food::spawnFood()
 	return full_name;
 }
 
+// find linear distance between two points
 float Food::calculateDistance(float x1, float y1, float x2, float y2)
 {
 	float dx = x1-x2;
@@ -168,5 +169,3 @@ int main(int argc, char **argv)
 	new_food.feedingTime();
 	return 0;
 }
-
-// }
