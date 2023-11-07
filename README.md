@@ -150,7 +150,7 @@ Fulfilled:
 ```
 A mutex or lock (e.g. std::lock_guard or `std::unique_lock) is used to protect data that is shared across multiple threads in the project code.
 ```
-[Food::spawnFood](src/turtle_food/src/food.cpp) uses a lock_guard when accessing static member data `counter_`.  Each parallel task needs a unique number for its identification.  The lock_guard is used to ensure that each thread has exclusive access when getting and incrementing the number.
+[Food::spawnFood](src/turtle_food/src/food.cpp) uses a mutex when incrementing static member data `counter_`.  Each parallel task needs a unique number for its identification.  The mutex is used to ensure that each thread has exclusive access when getting and incrementing the number.
 
 ### Rubric Point 4/5: The project uses smart pointers instead of raw pointers.
 ```

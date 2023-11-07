@@ -16,6 +16,7 @@
 #include <random>
 #include <memory>
 #include <math.h>	
+#include <mutex>
 
 
 #include <QImage>
@@ -55,6 +56,7 @@ class Food
 		std::vector<std::future<void>> food_futures_;
 		float distance_;
 		float threshold_;
+		std::mutex mutex_;
 };
 
 #endif // TURTLE_FOOD_H

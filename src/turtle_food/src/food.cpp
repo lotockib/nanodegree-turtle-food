@@ -88,8 +88,9 @@ void Food::launchAsync()
 void Food::spawnFood()
 {
 	// Create name using static counter
-	// TODO  std::lock_guard
+	mutex_.lock(); // counter_ is shared across tasks, so lock when modifying
 	std::string full_name = "food" + std::to_string(counter_++);
+	mutex_.unlock();
 
 	/* Spawn food */
 
@@ -170,7 +171,7 @@ int main(int argc, char **argv)
 		num_apples = 10;
 	}
 
-	Food new_food = Food(ros::NodeHandle("food_handle"), num_apples);
+	Food new_food(ros::NodeHandle("food_handle"), num_apples);
 
 	// Food new_food = Food(ros::NodeHandle("food_handle"));
 	new_food.feedingTime();
