@@ -1,40 +1,51 @@
 # Scope
 
-Capstone project for Udacity C++ Nanodegree course.  This code was developed started with the [ros turtlesim code](https://github.com/ros/ros_tutorials).
+Capstone project for Udacity C++ Nanodegree course.
 
 # Requirements
 
-You must be running a fresh install of Ubuntu 16.04, or using a fresh Udacity virtual machine from the nanodegree course.
+You must be running a fresh install of Ubuntu 16.04, or using a fresh Udacity virtual machine from the nanodegree course which also uses Ubuntu 16.04.
 
 # Setup
 
+## Udacity VM Machine
+```bash
+cd /home/workspace
+git clone http://github.com/lotockib/nanodegree-turtle-food.git
+cd nanodegree-turtle-food
+./setup.sh
+```
+
+## Personal Machine
+```bash
+cd ~
+git clone http://github.com/lotockib/nanodegree-turtle-food.git
+cd nanodegree-turtle-food
+./setup.sh
+```
+
+## Setup Troubleshooting
+
+If you are having setup problems, follow these steps and then re-run setup.sh.
+
 1. Verify python is version 3.7 with command `python --version`
 2. If python is not version 3.7, download and install Miniconda3-py37_23.1.0-1-Linux-x86_64.sh from [here](https://repo.anaconda.com/miniconda/)
-3. Clone repo
-    ```bash
-    cd /home/workspace (for udacity VM) or cd ~ (for any other machine)
-    git clone http://github.com/lotockib/ros-tutorials.git
-    ```
-4. Run setup script
-    ```bash
-    cd /home/workspace (for udacity VM) or cd ~ (for any other machine)
-    cd ros-tutorials
-    ./setup.sh
-    ```
 
 # Run
 
-1. In a new terminal
-    ```bash
-    cd <this repositories directory>
-    ./run_turtle_food.sh
-    ```
+Open new terminal.  Make sure all other terminals are closed.
 
-2. When the turtle GUI appears, click the terminal window again.
+For Udacity VM: `cd /home/workspace/nanodegree-turtle-food`, or for personal machine: `cd ~/nanodegree-turtle-food`
 
-3. Use arrow keys to drive the turtle to each apple and eat them.
+Run program with default of 10 apples: `./run_turtle_food.sh`.  Or choose the number of apples `./run_turtle_food.sh <num apples>`
 
-4. Close the GUI and the terminal when done.
+When the turtle GUI appears, click the terminal window again, so the terminal can read the keyboard inputs.
+
+Use arrow keys to drive the turtle to each apple and eat them.
+
+Close the GUI and the terminal when done.
+
+#TODO add gif
 
 # Project Details
 
@@ -52,7 +63,7 @@ Node 2 is the [food_node](src/turtle_food/src/food.cpp).  It generates food in r
 
 This project was developed starting with the [ros turtlesim code](https://github.com/ros/ros_tutorials).  
 
-ros turtlesim code I edited
+ROS open source turtlesim code I edited
 - [src/turtle_food/src/turtle_frame.cpp](src/turtle_food/src/turtle_frame.cpp)
   - Added QVector for food and food handling
   - Added TurtleFrame::spawnFoodCallback: callback function
@@ -60,14 +71,12 @@ ros turtlesim code I edited
   - Added TurtleFrame::killFoodCallback: callback function to delete food
 - Mis other changes.  All changes can be seen [here](https://github.com/lotockib/nanodegree-turtle-food/pull/1)  
 
-code I created
+Code I created
 - [src/turtle_food/include/turtle_food/food.h](src/turtle_food/include/turtle_food/food.h) and [src/turtle_food/src/food.cpp](src/turtle_food/src/food.cpp)
 - [src/turtle_food/srv/SpawnFood.srv](src/turtle_food/srv/SpawnFood.srv)
   - Created this service message so food_node could command food to be created
 - [src/turtle_food/srv/KillFood.srv](src/turtle_food/srv/KillFood.srv)
   - Created this service message so food_node could command food to be deleted
-
-## 
 
 # Rubric
 
