@@ -102,11 +102,17 @@ void Food::spawnFood()
 	std::random_device rd;     // Seed
 	std::mt19937 rng(rd());    // Random number generator
 	std::uniform_real_distribution<> dis(0.0f, 10.0f);
-	float food_x = dis(rng);
-	float food_y = dis(rng);
+	float food_x, food_y;
+	do // Position must start away from turtle so it's not automatically eaten
+	{
+		food_x = dis(rng);
+		food_y = dis(rng);
+	}
+	while (calculateDistance(food_x, food_y, pose_->x, pose_->y) < 2 * threshold_);
+
+	// Build service request
 	new_food_srv.request.x = food_x;
 	new_food_srv.request.y = food_y;
-	// new_food_srv.request.theta = 0;
 	new_food_srv.request.name = full_name;	
 
 	// Send service request to spawn
