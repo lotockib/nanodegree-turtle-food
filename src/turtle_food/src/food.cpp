@@ -116,19 +116,11 @@ void Food::spawnFood()
 	new_food_srv.request.name = full_name;	
 
 	// Send service request to spawn
-	if (client.call(new_food_srv))
-  {
-    ROS_INFO("Food created: %s", new_food_srv.response.name.c_str());
-  }
-  else
+	if (!client.call(new_food_srv))
   {
     ROS_ERROR("Failed to call service spawn food");
-    return;
+		return;
   }
-
-	std::this_thread::sleep_for(std::chrono::seconds(1));
-
-
 
 	/* Kill food */
 	while(calculateDistance(food_x, food_y, pose_->x, pose_->y) > threshold_)
@@ -145,14 +137,9 @@ void Food::spawnFood()
 
 	// Send service request to kill
 	kill_food_srv.request.name = full_name;
-	if (client_kill.call(kill_food_srv))
-  {
-    ROS_INFO("Food killed: %s, food remaining: %d", full_name.c_str(), (int) food_futures_.size());
-  }
-  else
+	if (!client_kill.call(kill_food_srv))
   {
     ROS_ERROR("Failed to call service kill food");
-    return;
   }
 
 	return;

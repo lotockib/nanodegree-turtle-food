@@ -143,7 +143,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   teleport_requests_.clear();
 
-  if (ros::WallTime::now() - last_command_time_ > ros::WallDuration(1.0))
+  if (ros::WallTime::now() - last_command_time_ > ros::WallDuration(0.5))
   {
     lin_vel_ = 0.0;
     ang_vel_ = 0.0;
