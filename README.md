@@ -35,9 +35,16 @@ If you are having setup problems, follow these steps and then re-run setup.sh.
 
 Open new terminal.  Make sure all other terminals are closed.
 
-For Udacity VM: `cd /home/workspace/nanodegree-turtle-food`, or for personal machine: `cd ~/nanodegree-turtle-food`
-
-Run program with default of 10 apples: `./run_turtle_food.sh`.  Or choose the number of apples `./run_turtle_food.sh <num apples>`
+Run command to use default of 10 apples
+```bash
+cd <directory chosen during setup>/nanodegree-turtle-food
+./run_turtle_food.sh
+```
+Or choose the number of apples
+```bash
+cd <directory chosen during setup>/nanodegree-turtle-food
+./run_turtle_food.sh <num apples>
+```
 
 When the turtle GUI appears, click the terminal window again, so the terminal can read the keyboard inputs.
 
@@ -151,4 +158,8 @@ The project uses at least one smart pointer: unique_ptr, shared_ptr, or weak_
 ```
 [Food::Food](src/turtle_food/src/food.cpp) and Food:positionCallback use a shared pointer for storing the current position of the turtle that is being read from the ROS message.  This pointer is then shared with each food task, so each food item can efficiently observe the turtle's location, and see if it's close enough to be "eaten".
 
-### Rubric Point 5/5: TBD
+### Rubric Point 5/5: The project accepts user input and processes the input.
+```
+The project accepts input from a user as part of the necessary operation of the program.
+```
+[food.cpp int main()](src/turtle_food/src/food.cpp) accepts optional input from user to specify how many apples they want displayed.  Or if none are provided, it uses 10 apples.
