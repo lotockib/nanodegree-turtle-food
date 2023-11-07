@@ -6,6 +6,7 @@
     turtle_food is a package developed from ros tutorial turtlesim
   </description>
   <maintainer email="brad.lotocki@gmail.com">Brad Lotocki</maintainer>
+  <license>TODO</license>
 
   <!-- <url type="website">http://www.ros.org/wiki/turtlesim</url>
   <url type="bugtracker">https://github.com/ros/ros_tutorials/issues</url>
