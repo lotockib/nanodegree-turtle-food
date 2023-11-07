@@ -9,5 +9,7 @@ eval "source $dir/devel/setup.bash"
 roscore &
 sleep 2
 rosrun turtle_food turtlesim_node & 
-rosrun turtle_food food_node & 
+rosrun turtle_food food_node "$@" &
 wait
+
+# roslaunch turtle_food sim.launch

@@ -9,6 +9,7 @@
 #include <turtle_food/Pose.h>
 #include "std_msgs/String.h"
 #include <turtle_food/SpawnFood.h>
+#include <turtle_food/Spawn.h>
 #include <turtle_food/KillFood.h>
 #include <thread>
 #include <future>
@@ -48,7 +49,7 @@ class Food
 		ros::Subscriber sub_;
 		ros::NodeHandle nh_;
 		int counter_;
-		int number_;
+		int num_food_;
 		std::shared_ptr<turtle_food::Pose> pose_;
 		bool turtle_comms_running_;
 		std::vector<std::future<void>> food_futures_;

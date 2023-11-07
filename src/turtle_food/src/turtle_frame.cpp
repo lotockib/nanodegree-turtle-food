@@ -223,6 +223,7 @@ std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, 
   turtles_[real_name] = t;
   update();
 
+  ROS_INFO("turtle height = %d", turtle_images_[index].height());
   ROS_INFO("Spawning turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
 
   return real_name;
@@ -248,7 +249,7 @@ std::string TurtleFrame::spawnFood(const std::string& name, float x, float y, si
   //     return "";
   //   }
   // }
-
+  ROS_INFO("apple height = %d", food_images_[index].height());
   TurtlePtr t(new Turtle(ros::NodeHandle(real_name), food_images_[index], QPointF(x, height_in_meters_ - y), PI / 2));
   turtles_[real_name] = t;
   update();
